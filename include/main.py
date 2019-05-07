@@ -43,7 +43,7 @@ req = requests.get(api_url, params=params)
 data = req.json()
 
 with open ("tests/output_json.json", "r") as test_json:
-    
+
 
 
 answer = 'Current temperature in {} is {}'
