@@ -1,1 +1,3 @@
 tests
+pyvenv.cfg
+.gitignore
