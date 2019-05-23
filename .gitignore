@@ -1,3 +1,2 @@
 tests
-pyvenv.cfg
-.gitignore
+**/__pycache__
