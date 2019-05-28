@@ -1,22 +1,28 @@
 import speech_recognition as sr
-import gtts
-from pygame import mixer
+import pyttsx3
+from py_translator import Translator
 
-weatherFriend = r"погода друг"
-byе = r"погода друг пока"
-new_city = r"сменить город"
-new_units = r"сменить единицу измерения"
+weatherFriend = "погода"
+until = ("погода друг пока", "пока", " до свидания", "пока пока", " до скорого", "до скорой встречи")
+new_city = ("сменить город", "поменяй город", "смени город", "поменять город")
+new_units = ("сменить единицу измерения", "сменить шкалу", "поменять единицы", "сменить единицы",
+             "сменить единицы измерения")
 
+greeting_city = "В каком городе вы находитесь?"
+greeting_units = """Температура доступна в градусах Фаренгейта, Цельсия и Кельвина
+                    \tДля температуры в градусах Фаренгейта скажите «Фаренгейт»
+                    \tДля температуры в градусах Цельсия скажите «Цельсий»
+                    \tДля температуры в Кельвинах скажите «Кельвин»."""
+time = ("время", "который час", "сколько времени", "сколько на часах")
+date = ("дата", "который день", "какое сегодня число", "который месяц", "который день")
 def talk(words):
 
-    phrase = gtts.gTTS(words, lang='ru')
-    phrase.save("data/latest_data.mp3")
+    voice_engine = pyttsx3.init()
 
-    mixer.init()
-    mixer.music.load("data/latest_data.mp3")
-    mixer.music.play()
-    while mixer.music.get_busy():
-        pass
+    voice_engine.setProperty('voice', 'russian')
+    voice_engine.setProperty('rate', 130)
+    voice_engine.say(words)
+    voice_engine.runAndWait()
 
 
 def command():
@@ -32,7 +38,48 @@ def command():
         transformation = r.recognize_google(audio, language="ru-RU").lower()
         print("Вы сказали", transformation)
     except sr.UnknownValueError:
-        talk("Я вас не поняла, мой капитан!")
+        talk("Товарищ, я не понял, что вы сказали!")
         transformation = command()
 
     return transformation
+
+
+def add_city():
+    while True:
+        print(greeting_city)
+        talk(greeting_city)
+        city = command()
+        talk("Всё верно?")
+        fast_ans = command()
+        if fast_ans == r"да":
+
+            eng_city = Translator().translate(text=city.replace("-", " "), dest="en").text
+
+            current_location = {
+                'q': eng_city,
+                'units': 'metric'
+            }
+            return current_location
+
+def add_units(city):
+    while True:
+        print(greeting_units)
+        talk(greeting_units)
+        units = command()
+        talk("Всё верно?")
+        fast_ans = command()
+        if fast_ans == r"да":
+            if units == "фаренгейт":
+                units = "imperial"
+            elif units == "цельсий":
+                units = "metric"
+            elif units == "кельвин":
+                units = "default"
+            else:
+                add_units(city)
+
+            current_location = {
+                'q': city,
+                'units': units
+            }
+            return current_location
