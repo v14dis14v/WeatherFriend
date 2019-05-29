@@ -83,4 +83,4 @@ while True:
 
     elif now in vm.date:
         print(datetime.strftime(datetime.now(), "%d.%m.%Y"))
-        vm.talk("Сейчас " + datetime.strftime(datetime.now(), "%d.%m"))
+        vm.talk("Сейчас " + datetime.strftime(datetime.now(), "%d") + vm.months[datetime.strftime(datetime.now(), "%m")])
