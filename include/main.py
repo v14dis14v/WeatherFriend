@@ -68,7 +68,7 @@ while True:
             json.dump(params, dp, indent=4)
         break
 
-    elif now == vm.weatherFriend:
+    elif now in vm.weatherFriend:
         weather(params)
 
     elif now in vm.new_city:
