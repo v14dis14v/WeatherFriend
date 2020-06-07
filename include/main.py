@@ -8,6 +8,7 @@ from datetime import datetime
 api_url = "http://api.openweathermap.org/data/2.5/weather"
 answer = "Сейчас в городе {} температура {} градусов {}, а за окном {}. Ветер {} метров в секунду"
 greeting = "В каком городе вы находитесь?"
+
 # go up one level
 os.chdir(os.path.abspath(os.path.join("src", "../..")))
 
