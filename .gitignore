@@ -2,4 +2,4 @@ tests
 **/__pycache__
 data/personal_information.json
 venv
-
+.idea

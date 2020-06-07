@@ -1,6 +1,8 @@
 import speech_recognition as sr
 import pyttsx3
-from py_translator import Translator
+import goslate
+
+gs = goslate.Goslate()
 
 weatherFriend = ("погода", "погода друг", "друг погода", "какая сейчас погода", "какая сейчас погода за окном")
 until = ("погода друг пока", "пока", " до свидания", "пока пока", " до скорого", "до скорой встречи")
@@ -19,7 +21,6 @@ months = {'01': 'Января', '02': 'Февраля', '03': 'Марта', '04'
           '07': 'Июля', '08': 'Августа', '09': 'Сентября', '10': 'Октября', '11': 'Ноября', '12': 'Декабря'}
 
 def talk(words):
-
     voice_engine = pyttsx3.init()
 
     voice_engine.setProperty('voice', 'russian')
@@ -56,7 +57,7 @@ def add_city():
         fast_ans = command()
         if fast_ans == r"да":
 
-            eng_city = Translator().translate(text=city.replace("-", " "), dest="en").text
+            eng_city = gs.translate(city.replace("-", " "), "en")
 
             current_location = {
                 'q': eng_city,

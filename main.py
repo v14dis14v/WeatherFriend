@@ -2,12 +2,14 @@ import requests
 import json
 import os
 import voice_manage as vm
-from py_translator import Translator
+import goslate
 from datetime import datetime
 
 api_url = "http://api.openweathermap.org/data/2.5/weather"
 answer = "Сейчас в городе {} температура {} градусов {}, а за окном {}. Ветер {} метров в секунду"
 greeting = "В каком городе вы находитесь?"
+
+gs = goslate.Goslate()
 
 # go up one level
 os.chdir(os.path.abspath(os.path.join("src", "../..")))
@@ -25,11 +27,12 @@ else:
 
 def weather(params):
     params['appid'] = 'bcb1fd74d24a5fd0662b7f7da023f505'
-    req = requests.get(api_url, params=params)
-    data = req.json()
-    rus_city = Translator().translate(text=data['name'], dest="ru").text
+    data = requests.get(api_url, params=params).json()
+    rus_city = gs.translate(data['name'], "ru")
+
     print(data['weather'][0]['main'])
-    weather_param = Translator().translate(text=data['weather'][0]['main'], dest="ru").text
+
+    weather_param = gs.translate(data['weather'][0]['main'], "ru")
     speed_wind = int(data['wind']['speed'])
     current_temp = int(data["main"]["temp"])
 
